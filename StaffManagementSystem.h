@@ -8,7 +8,8 @@ public:
 
 	// Menu of the system
 	void ShowMenu();
-	// d0
+	
+	// Exit the system
 	void ExitSystem();
 
 	~StaffManagementSystem();

@@ -23,5 +23,8 @@
     <ClInclude Include="StaffManagementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Staff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

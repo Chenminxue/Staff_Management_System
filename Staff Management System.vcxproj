@@ -142,6 +142,7 @@
     <ClCompile Include="StaffManagementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Staff.h" />
     <ClInclude Include="StaffManagementSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

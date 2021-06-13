@@ -1,7 +1,20 @@
 #include "StaffManagementSystem.h"
-
+#include "Staff.h"
 
 int main() {
+
+	//Staff* worker = NULL;
+	//worker = new Worker(1, "zhangsan", 1);
+	//worker->ShowInfo();
+	//delete worker;
+
+	//worker = new Manager(2, "lisi", 2);
+	//worker->ShowInfo();
+	//delete worker;
+
+	//worker = new Boss(3, "wangwu", 3);
+	//worker->ShowInfo();
+	//delete worker;
 
 	StaffManagementSystem sms;
 
@@ -46,7 +59,6 @@ int main() {
 	return 0;
 }
 
-
 StaffManagementSystem::StaffManagementSystem() {
 	
 }
@@ -74,4 +86,56 @@ void StaffManagementSystem::ExitSystem() {
 	cout << "Goodbye!\n";
 	system("pause");
 	exit(0);
+}
+
+Worker::Worker(int id, string name, int departmentID) {
+	this->m_ID = id;
+	this->m_name = name;
+	this->m_DepartmentID = departmentID;
+}
+
+void Worker::ShowInfo() {
+	cout << "\tStaff ID " << this->m_ID <<
+		"\tStaff name " << this->m_name <<
+		"\tStaff department " << this->GetDepartmentInfo() <<
+		"\tStaff responsibility : Complete the tasks assigned by the manager." << endl;
+}
+
+// return department name
+string Worker::GetDepartmentInfo() {
+	return "worker";
+}
+
+Manager::Manager(int id, string name, int departmentID) {
+	this->m_ID = id;
+	this->m_name = name;
+	this->m_DepartmentID = departmentID;
+}
+
+void Manager::ShowInfo() {
+	cout << "\tStaff ID " << this->m_ID <<
+		"\tStaff name " << this->m_name <<
+		"\tStaff department " << this->GetDepartmentInfo() <<
+		"\tStaff responsibility : Complete the tasks assigned by the boss." << endl;
+}
+
+string Manager::GetDepartmentInfo() {
+	return "Manager";
+}
+
+Boss::Boss(int id, string name, int departmentID) {
+	this->m_ID = id;
+	this->m_name = name;
+	this->m_DepartmentID = departmentID;
+}
+
+void Boss::ShowInfo() {
+	cout << "\tStaff ID " << this->m_ID <<
+		"\tStaff name " << this->m_name <<
+		"\tStaff department " << this->GetDepartmentInfo() <<
+		"\tStaff responsibility : Manage all employees." << endl;
+}
+
+string Boss::GetDepartmentInfo() {
+	return "Boss";
 }
