@@ -23,8 +23,10 @@ int main() {
 			sms.AddStaff();
 			break;
 		case 2: // Show Staff info
+			sms.ShowStaff();
 			break;
 		case 3: // Delete Staff info
+			sms.DeleteStaff();
 			break;
 		case 4: // Modify Staff info
 			break;
@@ -90,11 +92,12 @@ StaffManagementSystem::StaffManagementSystem() {
 	this->m_StaffArr = new Staff * [this->m_StaffNum];
 	this->InitialStaff();
 
-	for (int i = 0; i < m_StaffNum; i++) {
-		cout << " StaffID: " << this->m_StaffArr[i]->m_ID
-			<< " StaffName: " << this->m_StaffArr[i]->m_name
-			<< " DepartmentID: " << this->m_StaffArr[i]->m_DepartmentID << endl;
-	}
+	// // test code
+	//for (int i = 0; i < m_StaffNum; i++) {
+	//	cout << " StaffID: " << this->m_StaffArr[i]->m_ID
+	//		<< " StaffName: " << this->m_StaffArr[i]->m_name
+	//		<< " DepartmentID: " << this->m_StaffArr[i]->m_DepartmentID << endl;
+	//}
 }
 
 StaffManagementSystem::~StaffManagementSystem() {
@@ -190,6 +193,61 @@ void StaffManagementSystem::AddStaff() {
 	system("cls");
 }
 
+void StaffManagementSystem::ShowStaff() {
+	if (this->m_FileIsEmpty) {
+		cout << "File doesn't exist or empty!" << endl;
+	}
+	else {
+		for (int i = 0; i < m_StaffNum; i++) {
+			this->m_StaffArr[i]->ShowInfo();
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+int StaffManagementSystem::IsStaffExist(int id) {
+	int index = -1;
+
+	for (int i = 0; i < this->m_StaffNum; i++) {
+		if (this->m_StaffArr[i]->m_ID == id) {
+			index = i;
+
+			break;
+		}
+	}
+	return index;
+}
+
+void StaffManagementSystem::DeleteStaff() {
+	if (this->m_FileIsEmpty) {
+		cout << "File doesn't exist or empty!" << endl;
+	}
+	else {
+		cout << "Which one(ID) you want to delete: " << endl;
+		int id = 0;
+		cin >> id;
+
+		int index = this->IsStaffExist(id);
+
+		if (index != -1) {
+			for (int i = index; i < this->m_StaffNum - 1; i++) {
+				this->m_StaffArr[i] = this->m_StaffArr[i + 1];
+			}
+			this->m_StaffNum--;
+
+			this->save();
+
+			cout << "Successfully deleted!" << endl;
+		}
+		else {
+			cout << "Error, Staff doesn't exist!" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
 Worker::Worker(int id, string name, int departmentID) {
 	this->m_ID = id;
 	this->m_name = name;
@@ -198,9 +256,9 @@ Worker::Worker(int id, string name, int departmentID) {
 
 void Worker::ShowInfo() {
 	cout << "\tStaff ID " << this->m_ID <<
-		"\tStaff name " << this->m_name <<
-		"\tStaff department " << this->GetDepartmentInfo() <<
-		"\tStaff responsibility : Complete the tasks assigned by the manager." << endl;
+		"\t\nStaff name " << this->m_name <<
+		"\t\nStaff department " << this->GetDepartmentInfo() <<
+		"\t\nStaff responsibility : Complete the tasks assigned by the manager." << endl;
 }
 
 // return department name
@@ -216,9 +274,9 @@ Manager::Manager(int id, string name, int departmentID) {
 
 void Manager::ShowInfo() {
 	cout << "\tStaff ID " << this->m_ID <<
-		"\tStaff name " << this->m_name <<
-		"\tStaff department " << this->GetDepartmentInfo() <<
-		"\tStaff responsibility : Complete the tasks assigned by the boss." << endl;
+		"\t\nStaff name " << this->m_name <<
+		"\t\nStaff department " << this->GetDepartmentInfo() <<
+		"\t\nStaff responsibility : Complete the tasks assigned by the boss." << endl;
 }
 
 string Manager::GetDepartmentInfo() {
@@ -233,9 +291,9 @@ Boss::Boss(int id, string name, int departmentID) {
 
 void Boss::ShowInfo() {
 	cout << "\tStaff ID " << this->m_ID <<
-		"\tStaff name " << this->m_name <<
-		"\tStaff department " << this->GetDepartmentInfo() <<
-		"\tStaff responsibility : Manage all employees." << endl;
+		"\t\nStaff name " << this->m_name <<
+		"\t\nStaff department " << this->GetDepartmentInfo() <<
+		"\t\nStaff responsibility : Manage all employees." << endl;
 }
 
 string Boss::GetDepartmentInfo() {

@@ -37,6 +37,15 @@ public:
 	// Initial Staff
 	void InitialStaff();
 
+	// ShowStaffInfo
+	void ShowStaff();
+
+	// Is Staff Exist or not
+	int IsStaffExist(int id);
+
+	// DeleteStaff
+	void DeleteStaff();
+
 	~StaffManagementSystem();
 };
 
