@@ -46,6 +46,12 @@ public:
 	// DeleteStaff
 	void DeleteStaff();
 
+	// Modify Staff Info
+	void ModifyStaffInfo();
+
+	// Search Staff
+	void SearchStaff();
+
 	~StaffManagementSystem();
 };
 

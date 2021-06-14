@@ -29,8 +29,10 @@ int main() {
 			sms.DeleteStaff();
 			break;
 		case 4: // Modify Staff info
+			sms.ModifyStaffInfo();
 			break;
 		case 5: // Search Staff info
+			sms.SearchStaff();
 			break;
 		case 6: // Sort by ID
 			break;
@@ -242,6 +244,121 @@ void StaffManagementSystem::DeleteStaff() {
 		}
 		else {
 			cout << "Error, Staff doesn't exist!" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+void StaffManagementSystem::ModifyStaffInfo() {
+	if (this->m_FileIsEmpty) {
+		cout << "File doesn't exist or empty!" << endl;
+	}
+	else {
+		cout << "Which one(ID) you want to modify: " << endl;
+		
+		int id;
+		cin >> id;
+		
+		int check = this->IsStaffExist(id);
+		if (check != -1) {
+			delete this->m_StaffArr[check];
+
+			int newID = 0;
+			string newName = "";
+			int newDepartmentID = 0;
+
+			cout << "Found ID: " << id << endl;
+			cout << "Enter new ID: " << endl;
+			cin >> newID;
+
+			cout << "Enter new name: " << endl;
+			cin >> newName;
+
+			cout << "Enter department ID: " << endl;
+			cout << "1. worker" << endl;
+			cout << "2. manager" << endl;
+			cout << "3. boss" << endl;
+
+			cin >> newDepartmentID;
+
+			Staff* staff = NULL;
+
+			switch (newDepartmentID) {
+			case 1:
+				staff = new Worker(newID, newName, newDepartmentID);
+				break;
+			case 2:
+				staff = new Manager(newID, newName, newDepartmentID);
+				break;
+			case 3:
+				staff = new Boss(newID, newName, newDepartmentID);
+				break;
+			default:
+				break;
+			}
+
+			this->m_StaffArr[check] = staff;
+
+			cout << "Successfully modified!" << endl;
+
+			this->save();
+		}
+		else {
+			cout << "Error, Staff doesn't exist!" << endl;
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+void StaffManagementSystem::SearchStaff() {
+	if (this->m_FileIsEmpty) {
+		cout << "File doesn't exist or empty!" << endl;
+	}
+	else {
+		cout << "1. Search by ID " << endl;
+		cout << "2. Search by name " << endl;
+	
+		int select = 0;
+		cin >> select;
+
+		if (select == 1) {
+			int id;
+			cout << "Please enter the ID number: " << endl;
+			cin >> id;
+
+			int check = IsStaffExist(id);
+			if (check != -1) {
+				cout << "Successfully found!" << endl;
+				this->m_StaffArr[check]->ShowInfo();
+			}
+			else {
+				cout << "Didn't find this person." << endl;
+			}
+		}
+		else if (select == 2) {
+			string name;
+			cout << "Please enter the name: " << endl;
+			cin >> name;
+
+			bool flag = false;
+
+			for (int i = 0; i < m_StaffNum; i++) {
+				if (this->m_StaffArr[i]->m_name == name) {
+					cout << "Successfully found " << this->m_StaffArr[i]->m_ID << " and Info: " << endl;
+
+					flag = true;
+
+					this->m_StaffArr[i]->ShowInfo();
+				}
+			}
+			if (flag == false) {
+				cout << "Didn't find this person." << endl;
+			}
+		}
+		else {
+			cout << "Error! Wrong input!" << endl;
 		}
 	}
 	system("pause");
