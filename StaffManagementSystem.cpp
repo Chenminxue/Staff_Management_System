@@ -3,19 +3,6 @@
 
 int main() {
 
-	//Staff* worker = NULL;
-	//worker = new Worker(1, "zhangsan", 1);
-	//worker->ShowInfo();
-	//delete worker;
-
-	//worker = new Manager(2, "lisi", 2);
-	//worker->ShowInfo();
-	//delete worker;
-
-	//worker = new Boss(3, "wangwu", 3);
-	//worker->ShowInfo();
-	//delete worker;
-
 	StaffManagementSystem sms;
 
 	int choice = 0;
@@ -33,6 +20,7 @@ int main() {
 			sms.ExitSystem();
 			break;
 		case 1: // Add Staff info
+			sms.AddStaff();
 			break;
 		case 2: // Show Staff info
 			break;
@@ -60,7 +48,8 @@ int main() {
 }
 
 StaffManagementSystem::StaffManagementSystem() {
-	
+	this->m_StaffNum = 0;
+	this->m_StaffArr = NULL;
 }
 
 StaffManagementSystem::~StaffManagementSystem() {
@@ -86,6 +75,70 @@ void StaffManagementSystem::ExitSystem() {
 	cout << "Goodbye!\n";
 	system("pause");
 	exit(0);
+}
+
+void StaffManagementSystem::AddStaff() {
+	cout << "Number of staff you want to add: " << endl;
+
+	int addNum = 0;
+	cin >> addNum;
+
+	if (addNum > 0) {
+		int newSize = this->m_StaffNum + addNum;
+		Staff** newSpace = new Staff* [newSize];
+
+		if (this->m_StaffArr != NULL) {
+			for (int i = 0; i < m_StaffNum; i++) {
+				newSpace[i] = this->m_StaffArr[i];
+			}
+		}
+		for (int j = 0; j < addNum; j++) {
+			int id;
+			string name;
+			int department;
+
+			cout << "Please enter ID of staff " << j + 1 << endl;
+			cin >> id;
+
+			cout << "Please enter name of staff " << j + 1 << endl;
+			cin >> name;
+
+			cout << "Please choose department ID " << endl;
+			cout << "1. worker" << endl;
+			cout << "2. manager" << endl;
+			cout << "3. boss" << endl;
+			cin >> department;
+
+			Staff* staff = NULL;
+			switch (department) {
+			case 1:
+				staff = new Worker(id, name, 1);
+				break;
+			case 2:
+				staff = new Manager(id, name, 2);
+				break;
+			case 3:
+				staff = new Boss(id, name, 3);
+				break;
+			default:
+				break;
+			}
+			newSpace[this->m_StaffNum + j] = staff;
+
+		}
+		delete[] this->m_StaffArr;
+
+		this->m_StaffArr = newSpace;
+
+		this->m_StaffNum = newSize;
+
+		cout << "Successfully added " << addNum << " staff!" << endl;
+	}
+	else {
+		cout << "Error, please enter again!" << endl;
+	}
+	system("pause");
+	system("cls");
 }
 
 Worker::Worker(int id, string name, int departmentID) {
