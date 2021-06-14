@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include "Staff.h"
+#include <fstream>
+#define FILENAME "StaffFile.txt"
 using namespace std;
 
 
@@ -22,6 +24,18 @@ public:
 
 	// Add Staff
 	void AddStaff();
+
+	// Save info 
+	void save();
+
+	// Is file empty?
+	bool m_FileIsEmpty;
+
+	// Get Staff in file
+	int GetStaffNum();
+
+	// Initial Staff
+	void InitialStaff();
 
 	~StaffManagementSystem();
 };

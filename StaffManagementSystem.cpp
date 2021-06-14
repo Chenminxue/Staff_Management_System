@@ -48,8 +48,53 @@ int main() {
 }
 
 StaffManagementSystem::StaffManagementSystem() {
+
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	// File doesn't exist
+	if (!ifs.is_open()) {
+		cout << "File doesn't exist!" << endl;
+
+		this->m_StaffNum = 0;
+		
+		this->m_StaffArr = NULL;
+
+		this->m_FileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+	
+	// File is empty
+	char ch;
+	ifs >> ch;
+	if (ifs.eof()) {
+		cout << "File is empty!" << endl;
+		this->m_StaffNum = 0;
+
+		this->m_StaffArr = NULL;
+
+		this->m_FileIsEmpty = true;
+		ifs.close();
+		return;
+	}
+
 	this->m_StaffNum = 0;
 	this->m_StaffArr = NULL;
+
+	// File is not empty
+	int num = this->GetStaffNum();
+	cout << "The number of Staff is " << num << endl;
+	this->m_StaffNum = num;
+
+	this->m_StaffArr = new Staff * [this->m_StaffNum];
+	this->InitialStaff();
+
+	for (int i = 0; i < m_StaffNum; i++) {
+		cout << " StaffID: " << this->m_StaffArr[i]->m_ID
+			<< " StaffName: " << this->m_StaffArr[i]->m_name
+			<< " DepartmentID: " << this->m_StaffArr[i]->m_DepartmentID << endl;
+	}
 }
 
 StaffManagementSystem::~StaffManagementSystem() {
@@ -132,7 +177,11 @@ void StaffManagementSystem::AddStaff() {
 
 		this->m_StaffNum = newSize;
 
+		this->m_FileIsEmpty = false;
+
 		cout << "Successfully added " << addNum << " staff!" << endl;
+	
+		this->save();
 	}
 	else {
 		cout << "Error, please enter again!" << endl;
@@ -191,4 +240,61 @@ void Boss::ShowInfo() {
 
 string Boss::GetDepartmentInfo() {
 	return "Boss";
+}
+
+void StaffManagementSystem::save() {
+	ofstream ofs;
+	ofs.open(FILENAME, ios::out);
+
+	for (int i = 0; i < m_StaffNum; i++) {
+		ofs << this->m_StaffArr[i]->m_ID << " "
+			<< this->m_StaffArr[i]->m_name << " "
+			<< this->m_StaffArr[i]->m_DepartmentID << endl;
+	}
+
+	ofs.close();
+}
+
+int StaffManagementSystem::GetStaffNum() {
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	int id;
+	string name;
+	int departmentID;
+
+	int num = 0;
+
+	while (ifs >> id && ifs >> name && ifs >> departmentID) {
+		num++;
+	}
+	return num;
+}
+
+void StaffManagementSystem::InitialStaff() {
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+
+	int id;
+	string name;
+	int departmentID;
+
+	int index = 0;
+
+	while (ifs >> id && ifs >> name && ifs >> departmentID) {
+		Staff* staff = NULL;
+
+		if (departmentID == 1) {
+			staff = new Worker(id, name, departmentID);
+		}
+		else if (departmentID == 2) {
+			staff = new Manager(id, name, departmentID);
+		}
+		else {
+			staff = new Boss(id, name, departmentID);
+		}
+		this->m_StaffArr[index] = staff;
+		index++;
+	}
+	ifs.close();
 }
