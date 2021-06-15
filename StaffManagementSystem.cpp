@@ -35,8 +35,10 @@ int main() {
 			sms.SearchStaff();
 			break;
 		case 6: // Sort by ID
+			sms.SortStaff();
 			break;
 		case 7: // Clear the System
+			sms.Clear();
 			break;
 		default:
 			cout << "Error, please enter again!\n";
@@ -365,6 +367,45 @@ void StaffManagementSystem::SearchStaff() {
 	system("cls");
 }
 
+void StaffManagementSystem::SortStaff(){
+	if (this->m_FileIsEmpty) {
+		cout << "File doesn't exist or empty!" << endl;
+		system("pause");
+		system("cls");
+	}
+	else {
+		cout << "1. Ascending" << endl;
+		cout << "2. Descending" << endl;
+
+		int select = 0;
+		cin >> select;
+
+		for (int i = 0; i < m_StaffNum; i++) {
+			int minOrmax = i;
+			for (int j = i + 1; j < this->m_StaffNum; j++) {
+				if (select == 1) {
+					if (this->m_StaffArr[minOrmax]->m_ID > this->m_StaffArr[j]->m_ID) {
+						minOrmax = j;
+					}
+				}
+				else {
+					if (this->m_StaffArr[minOrmax]->m_ID < this->m_StaffArr[j]->m_ID) {
+						minOrmax = j;
+					}
+				}
+			}
+			if (i != minOrmax) {
+				Staff* temp = this->m_StaffArr[i];
+				this->m_StaffArr[i] = this->m_StaffArr[minOrmax];
+				this->m_StaffArr[minOrmax] = temp;
+			}
+		}
+		cout << "Sorted successfully!" << endl;
+		this->save();
+		this->ShowStaff();
+	}
+}
+
 Worker::Worker(int id, string name, int departmentID) {
 	this->m_ID = id;
 	this->m_name = name;
@@ -472,4 +513,33 @@ void StaffManagementSystem::InitialStaff() {
 		index++;
 	}
 	ifs.close();
+}
+
+void StaffManagementSystem::Clear() {
+	cout << "Are you sure?" << endl;
+	cout << "1. yes" << endl;
+	cout << "2. no" << endl;
+
+	int select = 0;
+	cin >> select;
+
+	if (select == 1) {
+		ofstream ofs(FILENAME, ios::trunc);
+		ofs.close();
+
+		if (this->m_StaffArr != NULL) {
+			for (int i = 0; i < this->m_StaffNum; i++) {
+				delete this->m_StaffArr[i];
+				this->m_StaffArr[i] = NULL;
+			}
+
+			delete[] this->m_StaffArr;
+			this->m_StaffArr = NULL;
+			this->m_StaffNum = 0;
+			this->m_FileIsEmpty = true;
+		}
+		cout << "Cleared successfully!" << endl;
+	}
+	system("pause");
+	system("cls");
 }

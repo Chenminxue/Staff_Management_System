@@ -52,6 +52,13 @@ public:
 	// Search Staff
 	void SearchStaff();
 
+	// Sort by ID
+	void SortStaff();
+
+	// Clear
+	void Clear();
+
+
 	~StaffManagementSystem();
 };
 
