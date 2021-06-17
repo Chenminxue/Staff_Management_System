@@ -1,6 +1,6 @@
 # Staff_Management_System
 
-He has the following functions:
+The system has the following functions:
 
       0. Exit             
       1. Add Staff info   
